@@ -20,7 +20,10 @@ jobs:
       - name: 📦 Instalar dependências
         run: npm install
 
-      - name: 🔨 Gerar Tailwind CSS direto com npx
+      - name: 🛠️ Corrigir permissões do Tailwind
+        run: chmod +x ./node_modules/.bin/tailwindcss
+
+      - name: 🔨 Gerar Tailwind CSS com npx
         run: npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify
 
       - name: 🚀 Publicar no GitHub Pages
