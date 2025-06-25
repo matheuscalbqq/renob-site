@@ -20,8 +20,8 @@ jobs:
       - name: 📦 Instalar dependências
         run: npm install
 
-      - name: 🔨 Gerar Tailwind CSS
-        run: npm run build
+      - name: 🔨 Gerar Tailwind CSS direto com npx
+        run: npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify
 
       - name: 🚀 Publicar no GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
