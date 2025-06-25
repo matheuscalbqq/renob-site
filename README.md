@@ -1,6 +1,6 @@
 # 🌐 RENOB Site
 
-Este é o site do projeto **RENOB**, desenvolvido com [Tailwind CSS](https://tailwindcss.com/) e publicado automaticamente com [GitHub Pages](https://pages.github.com/) via GitHub Actions. Feito em parceria com **[@goanalytics05](https://github.com/goanalytics05)**.
+Este é o site do projeto **RENOB**, desenvolvido com [HTML](https://developer.mozilla.org/pt-BR/docs/Web/HTML), [Tailwind CSS](https://tailwindcss.com/), [JavaScript](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript) e [Python](https://www.python.org/), e publicado automaticamente com [GitHub Pages](https://pages.github.com/) via GitHub Actions. Feito em parceria com **[@goanalytics05](https://github.com/goanalytics05)**.
 
 ---
 
