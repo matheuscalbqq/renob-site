@@ -1,10 +1,10 @@
-# 🌐 Renob Site
+# 🌐 RENOB Site
 
-Este é o site do projeto **Renob**, desenvolvido com [Tailwind CSS](https://tailwindcss.com/) e publicado automaticamente com [GitHub Pages](https://pages.github.com/) via GitHub Actions.
+Este é o site do projeto **RENOB**, desenvolvido com [Tailwind CSS](https://tailwindcss.com/) e publicado automaticamente com [GitHub Pages](https://pages.github.com/) via GitHub Actions. Feito em parceria com @goanalytics05.
 
 ---
 
-## 🚀 Visualização
+## 🖥️ Visualização
 
 Acesse o site em:  
 🔗 [https://matheuscalbqq.github.io/renob-site](https://matheuscalbqq.github.io/renob-site)
