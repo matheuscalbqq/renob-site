@@ -73,14 +73,3 @@ Toda vez que você fizer um \`push\` na branch \`main\`, o GitHub Actions irá:
 2. Copiar os arquivos da pasta \`public/\`
 3. Publicar automaticamente no GitHub Pages (branch \`gh-pages\`)
 
----
-
-## 🤝 Contribuições
-
-Fique à vontade para abrir issues ou pull requests. Toda ajuda é bem-vinda!
-
----
-
-## 📄 Licença
-
-Este projeto está licenciado sob a [MIT License](LICENSE).
