@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="pt-BR" style="scroll-behavior: smooth;">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RENOB-MG</title>  
+  <link rel="stylesheet" href="dist/output.css">
+</head>
+<body class="bg-gray-100">
+
+  <!-- CABEÇALHO FIXO -->
+  <header class="bg-white shadow-md p-4 flex items-center fixed top-0 w-full z-50">
+    <!-- Logo à esquerda -->
+    <!-- Contêiner que expande e centraliza o menu -->
+    <div class="flex-1 flex justify-center">
+      <div>
+      <img src="logo-renob-vet.png" alt="Logo" width="100" height="auto" />
+      </div>
+      <nav class="flex space-x-6">
+        <a href="#" class="text-gray-700 hover:text-blue-600">Introdução</a>
+        <a href="#missao" class="text-gray-700 hover:text-blue-600">Nossa Missão</a>
+        
+        <div class="relative">
+          <button id="menuButton" class="text-gray-700 hover:text-blue-600 flex items-center">
+            Dados SISVAN ▾
+          </button>
+          <div
+            id="dropdownMenu"
+            class="absolute hidden bg-white shadow-md mt-2 w-64 rounded-md p-2"
+          >
+            <a href="#mapeamento" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+              Mapeamento do Estado Nutricional
+            </a>
+            <a href="#regional" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+              Mapeamento Regional
+            </a>
+            <a href="#analises" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+              Análises Temporais
+            </a>
+          </div>
+        </div>
+
+        <a href="#membros" class="text-gray-700 hover:text-blue-600">Membros</a>
+        <a href="#materiais" class="text-gray-700 hover:text-blue-600">Materiais de Apoio</a>
+        <a href="#contatos" class="text-gray-700 hover:text-blue-600">Contatos</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ESPAÇO PARA O CABEÇALHO FIXO (opcional, mas geralmente necessário) -->
+  <!-- Ajuste o valor de "h-16" de acordo com a altura real do cabeçalho -->
+  <div class="h-48"></div>
+
+  <!-- SEÇÕES (conteúdos) -->
+  <section id="introducao" class="min-h-screen flex flex-col items-center justify-center pb-32">
+    <div class="max-w-6xl w-full px-4 mx-auto">
+      <h1 class="text-2xl font-bold mb-4 place-self-center">Introdução</h1>
+      <p class="text-justify text-black-600">
+        Seja bem-vindo ao nosso site dedicado ao monitoramento do <b>estado nutricional da população brasileira</b>. 
+        Com base em dados oficiais do <b>Sistema de Vigilância Alimentar e Nutricional (SISVAN)</b>, apresentamos uma alternativa de visualização detalhada sobre a <b>situação nutricional da população brasileira</b>. 
+        Nosso objetivo é fornecer informações <b>confiáveis e territorializadas</b>, apoiando <b>gestores públicos, profissionais da saúde, pesquisadores e formuladores de políticas</b> no planejamento de <b>ações estratégicas e intervenções efetivas</b> no campo da saúde nutricional.
+      </p>
+      <br>
+      <h2 class="text-xl font-bold mb-4 self-start">Abrangência dos Dados</h2>
+      <p class="text-justify text-black-600">
+        Nosso sistema permite explorar indicadores por:
+      </p>
+      <ul class="indent-8 list-disc list-inside mt-2 mb-2">
+      <li><b>Unidades geográficas</b>: Municípios, Unidades Federativas e Regiões de Saúde;</li>
+      <li><b>Gênero</b>: Feminino e Masculino;</li>
+      <li><b>Fase da vida</b>: Adultos (20-59 anos);</li>
+      <li><b>Período</b>: Análises de 2008 a 2024.</li>
+      </ul>
+      <p class="text-justify text-black-600">
+        Essa estrutura facilita análises comparativas e permite <b>identificar tendências, vulnerabilidades regionais e perfis nutricionais específicos</b>, fundamentais para a formulação de <b>políticas de saúde pública baseadas em evidências</b>. Exemplos de análise disponíveis:
+      </p>
+      <ul class="indent-8 list-disc list-inside mt-2">
+      <li>Comparação da prevalência de <b>obesidade entre mulheres adultas</b> em diferentes estados (ex: Minas Gerais vs. São Paulo);</li>
+      <li>Avaliação da <b>evolução da desnutrição infantil</b> em uma mesma região ao longo dos anos;</li>
+      <li>Identificação de áreas com maior prevalência de <b>sobrepeso entre adolescentes</b>;</li>
+      </ul>
+      <br>
+      <h2 class="text-xl font-bold mb-4 self-start">Classificação do Estado Nutricional</h2>
+      <p class="text-justify text-black-600">
+        Utilizamos critérios padronizados com base no <b>Índice de Massa Corporal (IMC)</b>, ajustados conforme a <b>fase da vida</b>. Abaixo, apresentamos os pontos de corte adotados e a fórmula do IMC:
+      </p>
+      <br>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="col-span-2 text-center font-bold">
+          <math display="block">
+            <mrow>
+            <mi>IMC</mi>
+            <mo>=</mo>
+            <mfrac>
+              <mrow>
+                <mi>Peso(kg)</mi>
+              </mrow>
+              <mrow>
+                <mi>Altura(m)</mi>
+                <mo>x</mo>
+                <mn>Altura(m)</mn>
+              </mrow>
+            </mfrac>
+            </mrow>
+          </math>
+          <br>
+        </div>
+        
+        <div>
+        <table class="place-self-center text-center border border-gray-600">
+          <caption class="font-bold">Crianças (0-5 anos)</caption>
+          <tr>
+            <th class="bg-gray-300 pl-4 pr-4 border-r border-b border-l border-gray-600">Percentil</th>
+            <th class="bg-gray-300 pl-4 pr-4 border-r border-b border-l border-gray-600">Escore-z</th>
+            <th class="bg-gray-300 pl-4 pr-4 border-r border-b border-l border-gray-600">Estado Nutricional</th>
+          </tr>
+          <tr>
+            <td class="border-r border-l border-gray-600">&lt; 0,1</td>
+            <td class="border-r border-l border-gray-600">&lt; -3</td>
+            <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Magreza acentuada</td>
+          </tr>
+          <tr>
+            <td class="border-r border-l border-gray-600"> 0,1 &le; 3</td>
+            <td class="border-r border-l border-gray-600">-3 &le; -2</td>
+            <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Magreza</td>
+          </tr>
+          <tr>
+            <td class="border-r border-l border-gray-600"> 3 &le; 85</td>
+            <td class="border-r border-l border-gray-600">-2 &le; 1</td>
+            <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Eutrofia</td>
+          </tr>
+          <tr>
+            <td class="border-r border-l border-gray-600"> 85 &le; 97</td>
+            <td class="border-r border-l border-gray-600">1 &le; 2</td>
+            <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Risco de sobrepeso</td>
+          </tr>
+          <tr>
+            <td class="border-r border-l border-gray-600"> 97 &le; 99,9</td>
+            <td class="border-r border-l border-gray-600">2 &le; 3</td>
+            <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Sobrepeso</td>
+          </tr>
+          <tr>
+            <td class="border-r border-l border-gray-600"> 99,9 &gt;</td>
+            <td class="border-r border-l border-gray-600">3 &gt;</td>
+            <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Obesidade</td>
+          </tr>
+        </table>
+        </div>
+        <div>
+          <table class="place-self-center text-center border border-gray-600">
+            <caption class="font-bold">Crianças e Adolescente (5-19 anos)</caption>
+            <tr>
+              <th class="bg-gray-300 pl-4 pr-4 border-r border-b border-l border-gray-600">Percentil</th>
+              <th class="bg-gray-300 pl-4 pr-4 border-r border-b border-l border-gray-600">Escore-z</th>
+              <th class="bg-gray-300 pl-4 pr-4 border-r border-b border-l border-gray-600">Estado Nutricional</th>
+            </tr>
+            <tr>
+              <td class="border-r border-l border-gray-600">&lt; 0,1</td>
+              <td class="border-r border-l border-gray-600">&lt; -3</td>
+              <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Magreza acentuada</td>
+            </tr>
+            <tr>
+              <td class="border-r border-l border-gray-600"> 0,1 &le; 3</td>
+              <td class="border-r border-l border-gray-600">-3 &le; -2</td>
+              <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Magreza</td>
+            </tr>
+            <tr>
+              <td class="border-r border-l border-gray-600"> 3 &le; 85</td>
+              <td class="border-r border-l border-gray-600">-2 &le; 1</td>
+              <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Eutrofia</td>
+            </tr>
+            <tr>
+              <td class="border-r border-l border-gray-600"> 85 &le; 97</td>
+              <td class="border-r border-l border-gray-600">1 &le; 2</td>
+              <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Sobrepeso</td>
+            </tr>
+            <tr>
+              <td class="border-r border-l border-gray-600"> 97 &le; 99,9</td>
+              <td class="border-r border-l border-gray-600">2 &le; 3</td>
+              <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Obesidade</td>
+            </tr>
+            <tr>
+              <td class="border-r border-l border-gray-600"> 99,9 &gt;</td>
+              <td class="border-r border-l border-gray-600">3 &gt;</td>
+              <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Obesidade grave</td>
+            </tr>
+          </table>
+          </div>
+          <div class="italic font-semibold col-span-2 place-self-center">*Pontos de corte de IMC-para-idade dos valores críticos de percentil e escore-z.</div>
+          <div class="col-span-2"></div>
+          <div>
+            <table class="place-self-center text-center">
+              <caption class="font-bold">Adultos (20-59 anos)</caption>
+              <tr>
+                <th class="bg-gray-300 pl-4 pr-4 border border-gray-600">IMC (kg/m²)</th>
+                <th class="bg-gray-300 pl-4 pr-4 border border-gray-600">Estado Nutricional</th>
+              </tr>
+              <tr>
+                <td class="border-r border-l border-gray-600">&lt; 18,5</td>
+                <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Baixo peso</td>
+              </tr>
+              <tr>
+                <td class="border-r border-l border-gray-600"> 18,5 &le; 24,9</td>
+                <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Eutrofia</td>
+              </tr>
+              <tr>
+                <td class="border-r border-l border-gray-600"> 25,0 &le; 29,9</td>
+                <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Sobrepeso</td>
+              </tr>
+              <tr>
+                <td class="border-r border-l border-gray-600"> 30,0 &le; 34,9</td>
+                <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Obesidade grau I</td>                
+              </tr>
+              <tr>
+                <td class="border-r border-l border-gray-600"> 35,0 &le; 39,9</td>
+                <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Obesidade grau II</td>
+              </tr>
+              <tr>
+                <td class="border-r border-l border-b border-gray-600"> 40,0 &gt;</td>
+                <td class="pl-4 pr-4 text-left border-r border-l border-b  border-gray-600">Obesidade grau III</td>
+              </tr>
+            </table>
+          </div>
+          <div>
+            <table class="place-self-center text-center border border-gray-600">
+              <caption class="font-bold">Idosos (60 anos ou mais)</caption>
+              <tr>
+                <th class="bg-gray-300 pl-4 pr-4 border-r border-b border-l border-gray-600">IMC (kg/m²)</th>
+                <th class="bg-gray-300 pl-4 pr-4 border-r border-b border-l border-gray-600">Diagnóstico Nutricional</th>
+              </tr>
+              <tr>
+                <td class="border-r border-l border-gray-600">&lt; 2</td>
+                <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Baixo peso</td>
+              </tr>
+              <tr>
+                <td class="border-r border-l border-gray-600"> 22 &le; 27</td>
+                <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Adequado ou Eutrofia</td>
+              </tr>
+              <tr>
+                <td class="border-r border-l border-gray-600"> 27 &gt;</td>
+                <td class="pl-4 pr-4 text-left border-r border-l border-gray-600">Sobrepeso</td>
+              </tr>
+            </table>
+        <p class="indent-16 text-justify text-black-600">
+        
+        </p>
+          </div>
+      </div>
+      <br>
+      <h2 class="text-xl font-bold mb-4 self-start">Por que isso Importa?</h2>
+      <p class="text-justify text-black-600">
+        Os dados apresentados aqui são uma ferramenta estratégica para:
+      </p>
+      <ul class="indent-8 list-disc list-inside mt-2 mb-2">
+      <li><b>Monitoramento contínuo</b> da situação nutricional no território nacional;</li>
+      <li><b>Avaliação de impacto</b> de políticas públicas;</li>
+      <li><b>Planejamento de ações locais</b>, como campanhas de prevenção à obesidade.</li>
+      </ul>
+      <p class="text-justify text-black-600">
+        <b>Transforme dados em ação</b>. Use nosso mapeamento como <b>base técnica para decisões mais eficazes em saúde pública</b>.
+      </p>
+
+    </div>
+    
+  </section>
+  <section id="missao" 
+  class="min-h-screen bg-gray-200 flex flex-col items-center justify-center">
+  <div class="max-w-6xl w-full px-4 mx-auto">
+  <h1 class="text-2xl font-bold text-center mb-4">
+    Nossa Missão
+  </h1>
+  <p class="indent-8 text-justify text-black-600">
+    Nosso compromisso é com a promoção da saúde e bem-estar da população brasileira. Trabalhamos com ciência baseada em evidências para fornecer informações confiáveis que auxiliem profissionais e gestores de saúde a fomentar políticas públicas mais robustas, especialmente no que tange à prevenção da obesidade por meio de um monitoramento e avaliação mais eficiente. Através deste site, esperamos fornecer subsídios para a formulação de políticas públicas de alimentação e nutrição mais eficazes.
+  </p>
+  <br>
+  <div class="grid grid-cols-3">
+    <div></div>
+    <div class="col-span-2">
+    <p class="w-4/5 font-text-justify text-black-60 italic">
+    Explore nossos mapas e gráficos para obter uma compreensão aprofundada do estado nutricional no Brasil e ajude-nos a construir um futuro mais saudável para todos.
+    </p>
+    </div>
+  </div>
+  </div>
+  </section>
+
+ <!-- Container geral em duas colunas (Filtros à esquerda, Conteúdo à direita) -->
+  <section id="mapeamento" 
+  class="min-h-screen flex flex-col items-center justify-center">
+  <h1 id="tituloMapeamento" class="text-2xl font-bold text-center mb-4">
+    Mapeamento do Estado Nutricional
+  </h1>
+
+  <!-- Container geral em duas colunas (Filtros + Quadro à esquerda e Gráfico à direita) -->
+  <div class="max-w-6xl w-full flex gap-4">
+    
+    <!-- COLUNA ESQUERDA: FILTROS + QUADRO DE ENTREVISTADOS -->
+    <div class="w-1/4 flex flex-col gap-4">
+      <!-- FILTROS -->
+      <div id="filtrosMapeamento" class="bg-white p-4 rounded-md shadow-md h-[25rem]">
+        <h2 class="text-lg font-bold mb-2">Filtros</h2>
+
+        <label for="selectUF" class="block font-semibold mt-2">Unidade Federativa</label>
+        <select id="selectUF" class="border border-gray-300 rounded p-1 w-full"></select>
+
+        <label for="selectMunicipio" class="block font-semibold mt-2">Município</label>
+        <select id="selectMunicipio" class="border border-gray-300 rounded p-1 w-full"></select>
+
+        <label for="selectAno" class="block font-semibold mt-2">Ano</label>
+        <select id="selectAno" class="border border-gray-300 rounded p-1 w-full"></select>
+
+        <label for="selectSexo" class="block font-semibold mt-2">Gênero</label>
+        <select id="selectSexo" class="border border-gray-300 rounded p-1 w-full">
+          <option value="Todos">Todos</option>
+          <option value="Fem">Feminino</option>
+          <option value="Masc">Masculino</option>
+        </select>
+
+        <label for="selectFase" class="block font-semibold mt-2">Fase da Vida</label>
+        <select id="selectFase" class="border border-gray-300 rounded p-1 w-full">
+          <option value="adulto">Adultos</option>
+          <option value="adolescente">Adolescentes</option>
+        </select>
+      </div>
+
+      <!-- QUADRO DE ENTREVISTADOS -->
+      <div id="quadroEntrevistados" class="bg-white p-4 rounded-md shadow-md">
+        <!--<h2 class="font-bold text-lg mb-2">Entrevistados</h2>-->
+        <p id="pHomens">
+            <span class="text-primary">■</span> Masculino: <span id="valorHomens">0</span>
+        </p>
+        <p id="pMulheres">
+            <span class="text-secondary">■</span> Feminino: <span id="valorMulheres">0</span>
+        </p>
+        <p id="pTodos">
+            <span class="text-tertiary">■</span> Todos: <span id="valorTodos">0</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- COLUNA DIREITA: GRÁFICO (com h-12) -->
+    <div class="w-3/4 h-98 bg-white p-4 rounded-md shadow-md relative">
+      <!-- Aqui o script mapeamento.js desenha o gráfico -->
+      <div id="graficoMapeamento" class="w-full h-full"></div>
+
+      <!-- BOTÃO PARA ABRIR MENU FLUTUANTE (opcional) -->
+      <button 
+        id="btnMenuAdultoToggle" 
+        class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded hidden"
+      >
+        | | |
+      </button>
+  
+      <!-- MENU FLUTUANTE PARA ADULTO (inicia oculto) -->
+      <div 
+        id="menuAdultoContainer" 
+        class="absolute top-12 right-2 bg-white p-2 shadow-md rounded-md hidden"
+      >
+        <h2 class="font-bold mb-2">Indicadores</h2>
+        
+        <!-- Checkboxes -->
+        <label class="block">
+          <input type="checkbox" name="adultoCols" value="baixo_peso" checked />
+          Baixo Peso
+        </label>
+        <label class="block">
+          <input type="checkbox" name="adultoCols" value="eutrofico" checked />
+          Eutrófico
+        </label>
+        <label class="block">
+          <input type="checkbox" name="adultoCols" value="sobrepeso" checked />
+          Sobrepeso
+        </label>
+        <label class="block">
+          <input type="checkbox" name="adultoCols" value="obesidade_G_1" checked />
+          Obesidade I
+        </label>
+        <label class="block">
+          <input type="checkbox" name="adultoCols" value="obesidade_G_2" checked />
+          Obesidade II
+        </label>
+        <label class="block">
+          <input type="checkbox" name="adultoCols" value="obesidade_G_3" checked />
+          Obesidade III
+        </label>
+
+        <label class="block">
+          <input type="checkbox" name="adultoCols" value="excesso_peso" />
+          Excesso de Peso
+        </label>
+        
+        <!-- Obesidade (soma de obesidade_G_1 + obesidade_G_2 + obesidade_G_3) -->
+        <label class="block">
+          <input type="checkbox" name="adultoCols" value="obesidade_calc" />
+          Obesidade
+        </label>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Seção de Mapeamento Regional (integrada via regional.js) -->
+  <!-- Seção Regional -->
+  <section id="regional"
+  class="min-h-screen  bg-gray-200 flex flex-col items-center justify-center mx-auto gap-4 bg-gray-100 p-5"
+  >
+    <h1 id="tituloRegional" class="text-2xl text-center font-bold mb-4">Mapeamento Regional</h1>
+    <div class="w-full flex gap-4 max-w-6xl">
+      <!-- Coluna Esquerda: Filtros -->
+    <!-- COLUNA ESQUERDA: FILTROS + QUADRO DE ENTREVISTADOS -->
+      <div class="w-1/4 flex flex-col gap-4 min-h-1">
+        <div id="regionalFilters" class="bg-white p-5 rounded-md shadow-md h-[30rem]">
+          <h2 class="text-lg font-bold mb-2">Filtros</h2>
+          <label for="filtro-ano" class="block font-semibold mt-2">Ano</label>
+          <select id="filtro-ano" class="border border-gray-300 rounded p-1 w-full"></select>
+          <label for="filtro-sexo" class="block font-semibold mt-2">Gênero</label>
+          <select id="filtro-sexo" class="border border-gray-300 rounded p-1 w-full">
+            <option value="Todos">Todos</option>
+            <option value="Fem">Feminino</option>
+            <option value="Masc">Masculino</option>
+          </select>
+          <label for="filtro-fasevida" class="block font-semibold mt-2">Fase da Vida</label>
+          <select id="filtro-fasevida" class="border border-gray-300 rounded p-1 w-full">
+            <option value="adulto">Adultos</option>
+            <option value="adolescente">Adolescentes</option>
+          </select>
+          <label for="filtroNutricional" class="block font-semibold mt-2">Estado Nutricional</label>
+          <select id="filtroNutricional" class="border border-gray-300 rounded p-1 w-full"></select>
+          <div id="container-divisao" style="display: none;">
+            <label for="filtro-divisao" class="block font-semibold mt-2">Divisão</label>
+            <select id="filtro-divisao" class="border border-gray-300 rounded p-1 w-full">
+              <option value="federativa">Divisão Federativa</option>
+              <option value="saude">Divisão de Saúde</option>
+            </select>
+          </div>
+          
+        </div>
+        <!-- QUADRO DE ENTREVISTADOS -->
+        <div id="quadroEntrevistadosRegional" class="bg-white p-4 rounded-md shadow-md min-h-1/6">
+          <h2 class="font-bold text-lg mb-2"></h2>
+          <p id="pHomensRegional">
+              <span class="lineMasc">■</span> Masculino: <span id="valorHomensRegional">0</span>
+          </p>
+          <p id="pMulheresRegional">
+              <span class="lineFem">■</span> Feminino: <span id="valorMulheresRegional">0</span>
+          </p>
+          <p id="pTodosRegional">
+              <span class="lineTodos">■</span> Todos: <span id="valorTodosRegional">0</span>
+          </p>
+          
+        </div>
+      </div>
+
+      <!-- Coluna Direita: Mapa e Legenda -->
+      <div id="regionalMapContainer" class="flex flex-row min-w-[800] bg-white p-4 rounded-md shadow-md items-center">
+        <!-- Aqui será renderizado o mapa (Brasil ou Estado) -->
+        <div id="mapaRegional" class="flex-1 mx-auto" ></div>
+        <div id="legendRegional" class="flex-1 mx-auto"></div>
+      </div>
+    </div>
+  </section>
+  <div class="fixed z-[9999] text-left p-2 bg-tooltip border border-tooltipBorder rounded-lg pointer-events-none text-tooltip font-bold shadow-tooltip opacity-0"></div>
+
+
+
+  <!-- SEÇÃO DE ANÁLISES TEMPORAIS -->
+  <section id="analises" class="min-h-screen flex flex-col items-center justify-center">
+    <h1 id="tituloTemporal"  class="text-2xl font-bold text-center mb-4">Análises Temporais</h1>
+    <div class="max-w-6xl w-full flex gap-4">      
+      <!-- COLUNA ESQUERDA: FILTROS + QUADRO DE ENTREVISTADOS -->
+      <div class="w-1/4 flex flex-col gap-4">
+        <!-- FILTROS -->
+        <div id="filtrosAnalise" class="bg-white p-5 rounded-md shadow-md h-[29rem]">
+          <h2 class="text-lg font-bold mb-2">Filtros</h2>
+          <label for="selectUFTemporal" class="block font-semibold mt-2">Unidade Federativa</label>
+          <select id="selectUFTemporal" class="border border-gray-300 rounded p-1 w-full"></select>
+          <div id="container-divisao-Temporal" style="display: none;">
+            <label for="filtro-divisao" class="block font-semibold mt-2">Divisão</label>
+            <select id="filtro-divisao-Temporal" class="border border-gray-300 rounded p-1 w-full">
+              <option value="federativa">Divisão Federativa</option>
+              <option value="saude">Divisão de Saúde</option>
+            </select>
+              <label for="selectMunicipioTemporal" class="block font-semibold mt-2">Município</label>
+              <select id="selectMunicipioTemporal" class="border border-gray-300 rounded p-1 w-full"></select>
+          </div>
+          <label for="selectSexoTemporal" class="block font-semibold mt-2">Gênero</label>
+          <select id="selectSexoTemporal" class="border border-gray-300 rounded p-1 w-full">
+          <option value="Todos">Todos</option>
+          <option value="Fem">Feminino</option>
+          <option value="Masc">Masculino</option>
+          </select>
+  
+          <label for="selectFaseTemporal" class="block font-semibold mt-2">Fase da Vida</label>
+          <select id="selectFaseTemporal" class="border border-gray-300 rounded p-1 w-full">
+            <option value="adulto">Adultos</option>
+            <option value="adolescente">Adolescentes</option>
+          </select>
+  
+          <label for="selectIndicador" class="block font-semibold mt-2">Estado Nutricional</label>
+          <select id="selectIndicador" class="border border-gray-300 rounded p-1 w-full"></select>
+        </div>
+        
+        <!-- QUADRO DE ENTREVISTADOS -->
+        <div id="quadroEntrevistadosTemporal" class="bg-white p-4 rounded-md shadow-md">
+          <h2 class="font-bold text-lg mb-2"></h2>
+          <p id="pHomensTemporal">
+              <span class="lineMasc">■</span> Masculino: <span id="valorHomensTemporal">0</span>
+          </p>
+          <p id="pMulheresTemporal">
+              <span class="lineFem">■</span> Feminino: <span id="valorMulheresTemporal">0</span>
+          </p>
+          <p id="pTodosTemporal">
+              <span class="lineTodos">■</span> Todos: <span id="valorTodosTemporal">0</span>
+          </p>
+        </div>
+      </div>
+      
+      <!-- COLUNA DIREITA: GRÁFICO -->
+      <div class="w-3/4 bg-white p-4 rounded-md shadow-md">
+        <div id="graficoAnaliseTemporal" class="w-full"></div>
+      </div>
+      
+    </div>
+  </section>
+  
+  <!-- SEÇÃO DE MEMBROS-->
+  <section id="membros"
+  class="min-h-screen  bg-gray-200 flex flex-col items-center justify-center mx-auto gap-4 bg-gray-100 p-5"
+  >
+  <div class="max-w-6xl w-full px-4 mx-auto">
+    <h1 class="text-2xl text-center font-bold mb-4">Membros</h1>
+    <br>
+    <p class="text-xl text-justify text-black-600 font-semibold">&#11045 Daniela Mayumi Usuda Prado Rocha</p>
+    <p class="text-justify text-black-600">Pós-doutoranda do Departamento de Nutrição e Saúde. Universidade Federal de Viçosa.</p>
+    <p class="text-justify text-black-600 font-semibold">Currículo Lattes: <a class="font-normal text-blue-700 underline" href="http://lattes.cnpq.br/1255736788675899">http://lattes.cnpq.br/1255736788675899</a></p>
+    <br>
+    <p class="text-xl text-justify text-black-600 font-semibold">&#11045 Gustavo de Oliveira Almeida</p>
+    <p class="text-justify text-black-600">Desenvolvedor | Mestrando do Departamento de Ciência da Computação. Universidade Federal de Viçosa.</p>
+    <p class="text-justify text-black-600 font-semibold">Currículo Lattes: <a class="font-normal text-blue-700 underline" href="http://lattes.cnpq.br/7406360365770055">http://lattes.cnpq.br/7406360365770055</a></p>
+    <br>
+    <p class="text-xl text-justify text-black-600 font-semibold">&#11045 Matheus Cavalcanti de Albuquerque</p>
+    <p class="text-justify text-black-600">Desenvolvedor e Analista de dados.</p>
+    <p class="text-justify text-black-600 font-semibold">Currículo Lattes: <a class="font-normal text-blue-700 underline" href="http://lattes.cnpq.br/9242679981831049">http://lattes.cnpq.br/9242679981831049</a></p>
+    <br>
+    <p class="text-xl text-justify text-black-600 font-semibold">&#11045 Helen Hermana Miranda Hermsdorff</p>
+    <p class="text-justify text-black-600">Professora do Departamento de Nutrição e Saúde. Universidade Federal de Viçosa.</p>
+    <p class="text-justify text-black-600 font-semibold">Currículo Lattes: <a class="font-normal text-blue-700 underline" href="http://lattes.cnpq.br/8193454290644430">http://lattes.cnpq.br/8193454290644430</a></p>
+    <br>
+    <p class="text-xl text-justify text-black-600 font-semibold">&#11045 Sabrina de Azevedo Silveira</p>
+    <p class="text-justify text-black-600">Professora do Departamento de Ciência da Computação. Universidade Federal de Viçosa.</p>
+    <p class="text-justify text-black-600 font-semibold">Currículo Lattes: <a class="font-normal text-blue-700 underline" href="http://lattes.cnpq.br/0899817111748167">http://lattes.cnpq.br/0899817111748167</a></p>
+    
+  </div>
+  </section>
+
+  <!-- SEÇÃO DE MATERIAIS DE APOIO-->
+  <section id="materiais"
+  class="min-h-screen flex flex-col items-center justify-center mx-auto gap-4 bg-gray-100 p-5"
+  >
+    <div class="max-w-6xl w-full px-4 mx-auto">
+    <h1 class="text-2xl text-center font-bold mb-4">Materiais de Apoio</h1>
+    <br>
+       
+    <h2 class="text-xl font-bold mb-4 self-start">Fontes de Dados</h2>
+    <p class="indent-8 text-justify text-black-600">
+      Os dados apresentados são provenientes do SISVAN, um sistema gerido pelo Ministério da Saúde que consolida informações sobre antropometria e marcadores de consumo alimentar. Desde 2008, o SISVAN tem sido uma ferramenta essencial para o registro de dados antropométricos e de marcadores de consumo alimentar até a geração de relatórios, os quais podem ser utilizados para monitorar e avaliar a situação nutricional da população atendida na Atenção Primária à Saúde (APS) em todo o país.    
+    </p>
+    <p class="indent-8 text-justify text-black-600">
+      Ministério da Saúde. Sistema de Vigilância Alimentar e Nutricional - SISVAN. Disponível em: <a class="text-blue-700 underline" href="https://sisaps.saude.gov.br/sisvan/index">https://sisaps.saude.gov.br/sisvan/index</a>.
+    </p>
+    <br>
+    
+    <h2 class="text-xl font-bold mb-4 self-start">Regiões de Saúde</h2>
+    <p class="indent-8 text-justify text-black-600">INFO - a acrescentar.</p>
+    </div>
+  </section>
+  <!-- SCRIPT DROPDOWN -->
+
+<!-- Scripts -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="mapeamento.js"></script>
+<script src="analise_temporal.js"></script>
+<script src="regional.js"></script>
+
+
+  <script>
+    document.getElementById("menuButton").addEventListener("click", function () {
+      document.getElementById("dropdownMenu").classList.toggle("hidden");
+    });
+    
+    document.addEventListener("click", function (event) {
+      const dropdown = document.getElementById("dropdownMenu");
+      const button = document.getElementById("menuButton");
+      if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.classList.add("hidden");
+      }
+    });
+  </script>
+  <!-- Tooltip -->
+
+</body>
+</html>
