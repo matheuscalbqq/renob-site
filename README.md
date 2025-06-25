@@ -22,7 +22,7 @@ Acesse o site em:
 
 ## 🛠️ Estrutura do projeto
 
-\`\`\`
+```
 renob-site/
 ├── src/
 │   └── input.css         # Arquivo de entrada do Tailwind
@@ -36,7 +36,7 @@ renob-site/
 ├── tailwind.config.js    # Configuração do Tailwind
 ├── postcss.config.js     # Configuração do PostCSS
 └── package.json          # Dependências e scripts
-\`\`\`
+```
 
 ---
 
@@ -44,10 +44,10 @@ renob-site/
 
 1. **Clone o repositório**
 
-\`\`\`bash
+```bash
 git clone https://github.com/matheuscalbqq/renob-site.git
 cd renob-site
-\`\`\`
+```
 
 2. **Instale as dependências**
 
@@ -57,9 +57,9 @@ npm install
 
 3. **Gere o CSS com Tailwind**
 
-\`\`\`bash
+```bash
 npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch
-\`\`\`
+```
 
 4. **Abra \`public/index.html\` em seu navegador**
 
