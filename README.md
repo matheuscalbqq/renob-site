@@ -51,9 +51,9 @@ cd renob-site
 
 2. **Instale as dependências**
 
-\`\`\`bash
+```bash
 npm install
-\`\`\`
+```
 
 3. **Gere o CSS com Tailwind**
 
