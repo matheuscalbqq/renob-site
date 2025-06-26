@@ -234,7 +234,12 @@ function atualizarQuadroRegional() {
  
 
 // Tooltip
-const tooltip = d3.select(".tooltip");
+let tooltip = d3.select("body").select(".tooltip");
+if (tooltip.empty()) {
+  tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip absolute bg-white border border-gray-300 p-2 text-sm shadow-lg pointer-events-none z-50 rounded max-w-xs")
+    .style("opacity", 0);
+}
 
 // =======================
 // Função para atualizar o título da seção Regional
