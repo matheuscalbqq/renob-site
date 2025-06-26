@@ -1,3 +1,54 @@
 @tailwind base;
 @tailwind components;
+
+@layer components {
+  /* container geral do tooltip */
+  .tooltip-regional {
+    @apply fixed z-50 pointer-events-none
+           transition-opacity duration-200
+           bg-white text-sm text-gray-800
+           px-3 py-2 rounded-lg
+           shadow-lg border border-gray-300;
+  }
+
+  /* layout interno, espaçamento entre linhas */
+  .tooltip-content {
+    @apply space-y-1;
+  }
+
+  /* título em negrito */
+  .tooltip-title {
+    @apply font-bold text-gray-800;
+  }
+
+  /* subtítulo em itálico */
+  .tooltip-subtitle {
+    @apply italic text-gray-600;
+  }
+
+  /* porcentagem feminina */
+  .tooltip-fem {
+    @apply text-red-500 font-medium;
+  }
+
+  /* porcentagem masculina */
+  .tooltip-masc {
+    @apply text-blue-500 font-medium;
+  }
+
+  /* cores */
+  .cor-masc { @apply text-masc; }
+  .cor-fem  { @apply text-fem; }
+  .cor-all  { @apply text-all; }
+  /* linhas do gráfico */
+.line-masc  { @apply stroke-masc; }
+.line-fem   { @apply stroke-fem; }
+.line-all   { @apply stroke-all; }
+
+/* círculos */
+.circle-masc    { @apply fill-masc; }
+.circle-fem     { @apply fill-fem; }
+.circle-all     { @apply fill-all; }
+
+}
 @tailwind utilities;

@@ -1,5 +1,4 @@
-// Caminho do seu CSV (pode estar local ou em um servidor)
-const csvUrl = "data/db_final.csv";
+import * as G from "./global.js";
 
 // Variáveis globais para armazenar todos os dados
 let allData = [];
@@ -22,85 +21,11 @@ document.querySelectorAll('input[name="adultoCols"]').forEach(chk => {
     chk.addEventListener("change", handleAdultoCheckboxChange);
 });
 
-const conflicts = {
-  "excesso_peso": ["sobrepeso","obesidade_G_1","obesidade_G_2","obesidade_G_3","obesidade_calc"],
-  "obesidade_calc": ["obesidade_G_1","obesidade_G_2","obesidade_G_3","excesso_peso"]
-};
-
-const nomeAmigavel = {
-  "altura_muito_baixa_para_a_idade": "Altura muito baixa para idade",
-  "altura_baixa_para_a_idade": "Altura baixa para idade",
-  "altura_adequada_para_a_idade": "Altura adequada para idade",
-  "magreza_acentuada": "Magreza Acentuada",
-  "magreza": "Magreza",
-  "obesidade": "Obesidade",
-  "obesidade_grave": "Obesidade Grave",
-  "baixo_peso": "Baixo Peso",
-  "eutrofico": "Eutrófico",
-  "sobrepeso": "Sobrepeso",
-  "obesidade_G_1": "Obesidade I",
-  "obesidade_G_2": "Obesidade II",
-  "obesidade_G_3": "Obesidade III",
-  "obesidade_calc": "Obesidade",
-  "excesso_peso": "Excesso de Peso"
-};
-
-const ufLabel = {
-  "AC": "Acre", "AL": "Alagoas", "AM": "Amazonas", "AP": "Amapá", "BA": "Bahia",
-  "CE": "Ceará", "DF": "Distrito Federal", "ES": "Espírito Santo", "GO": "Goiás",
-  "MA": "Maranhão", "MT": "Mato Grosso", "MS": "Mato Grosso do Sul", "MG": "Minas Gerais",
-  "PA": "Pará", "PB": "Paraíba", "PR": "Paraná", "PE": "Pernambuco", "PI": "Piauí",
-  "RJ": "Rio de Janeiro", "RN": "Rio de Janeiro", "RS": "Rio Grande do Sul",
-  "RO": "Rondônia", "RR": "Roraima", "SC": "Santa Catarina", "SP": "São Paulo",
-  "SE": "Sergipe", "TO": "Tocantins", "Brasil": "Brasil"
-};
-
-const sexoLabel = {
-  "Fem": "Femininos",
-  "Masc": "Masculinos",
-  "Todos": " "
-};
-
-const faseLabel = {
-  "adulto": "Adultos",
-  "adolescente": "Adolescentes"
-};
-
-const statesGeojsonFiles = {
-  "AC": "data/geojson/br_cities/geojs-12-mun.json",
-  "AM": "data/geojson/br_cities/geojs-13-mun.json",
-  "AP": "data/geojson/br_cities/geojs-16-mun.json",
-  "PA": "data/geojson/br_cities/geojs-15-mun.json",
-  "RO": "data/geojson/br_cities/geojs-11-mun.json",
-  "RR": "data/geojson/br_cities/geojs-14-mun.json",
-  "TO": "data/geojson/br_cities/geojs-17-mun.json",
-  "AL": "data/geojson/br_cities/geojs-27-mun.json",
-  "BA": "data/geojson/br_cities/geojs-29-mun.json",
-  "CE": "data/geojson/br_cities/geojs-23-mun.json",
-  "MA": "data/geojson/br_cities/geojs-21-mun.json",
-  "PB": "data/geojson/br_cities/geojs-25-mun.json",
-  "PE": "data/geojson/br_cities/geojs-26-mun.json",
-  "PI": "data/geojson/br_cities/geojs-22-mun.json",
-  "RN": "data/geojson/br_cities/geojs-24-mun.json",
-  "SE": "data/geojson/br_cities/geojs-28-mun.json",
-  "ES": "data/geojson/br_cities/geojs-32-mun.json",
-  "MG": "data/geojson/br_cities/geojs-31-mun.json",
-  "RJ": "data/geojson/br_cities/geojs-33-mun.json",
-  "SP": "data/geojson/br_cities/geojs-35-mun.json",
-  "PR": "data/geojson/br_cities/geojs-41-mun.json",
-  "RS": "data/geojson/br_cities/geojs-43-mun.json",
-  "SC": "data/geojson/br_cities/geojs-42-mun.json",
-  "DF": "data/geojson/br_cities/geojs-53-mun.json",
-  "GO": "data/geojson/br_cities/geojs-52-mun.json",
-  "MT": "data/geojson/br_cities/geojs-51-mun.json",
-  "MS": "data/geojson/br_cities/geojs-50-mun.json"
-};
-
 const cidadesFriendly = {};
 
 // Função para pré-carregar os nomes amigáveis de todas as cidades.
 function preloadCidadesFriendly() {
-  const promises = Object.entries(statesGeojsonFiles).map(([uf, path]) => {
+  const promises = Object.entries(G.stateGeojsonFiles).map(([uf, path]) => {
     return d3.json(path).then(geoData => {
       cidadesFriendly[uf] = {};
       geoData.features.forEach(feature => {
@@ -119,7 +44,7 @@ function preloadCidadesFriendly() {
 preloadCidadesFriendly().then(() => {
   console.log("Nomes amigáveis das cidades pré-carregados:", cidadesFriendly);
   // Agora pode prosseguir com a carga dos dados CSV e a inicialização dos filtros:
-  d3.csv(csvUrl).then(data => {
+  d3.csv(G.csvDataUrl).then(data => {
     allData = data;
     popularSelects(data);
     atualizarTitulo();
@@ -134,7 +59,7 @@ function handleAdultoCheckboxChange(e) {
 
   // Se clicou em "excesso_peso" E estiver marcando:
   if (value === "excesso_peso" && isChecked) {
-    conflicts.excesso_peso.forEach(col => {
+    G.conflicts.excesso_peso.forEach(col => {
       if (col === "excesso_peso") return;
       const chkEl = document.querySelector(`input[name="adultoCols"][value="${col}"]`);
       if (chkEl) {
@@ -144,7 +69,7 @@ function handleAdultoCheckboxChange(e) {
       }
     });
   } else if (value === "excesso_peso" && !isChecked) {
-    conflicts.excesso_peso.forEach(col => {
+    G.conflicts.excesso_peso.forEach(col => {
       if (col === "excesso_peso") return;
       const chkEl = document.querySelector(`input[name="adultoCols"][value="${col}"]`);
       if (chkEl) {
@@ -214,7 +139,7 @@ function handleAdultoCheckboxChange(e) {
 }
 
 // Função para carregar dados e popular selects
-d3.csv(csvUrl).then(data => {
+d3.csv(G.csvUrl).then(data => {
   // Armazena todos os dados lidos
   allData = data;
 
@@ -248,7 +173,7 @@ function popularSelects(data) {
   ufs.forEach(uf => {
     const option = document.createElement("option");
     option.value = uf;
-    option.text = ufLabel[uf] ? `${ufLabel[uf]} (${uf})` : uf;
+    option.text = G.ufLabel[uf] ? `${G.ufLabel[uf]} (${uf})` : uf;
     selectUF.appendChild(option);
   });
 
@@ -524,8 +449,8 @@ function atualizarTitulo() {
   recuperarNomeMunicipio().then(municipioAmigavel => {
     // Se nenhum município for selecionado, use um formato sem mencionar o município.
     const novoTitulo = !municipioAmigavel || municipioAmigavel === " "
-      ? `Mapeamento de Estados Nutricionais em ${faseLabel[fase]} ${sexoLabel[sexo]} - ${ufLabel[uf]} ${ano}`
-      : `Mapeamento de Estados Nutricionais em ${faseLabel[fase]} ${sexoLabel[sexo]} - ${municipioAmigavel} ${ano}`;
+      ? `Mapeamento de Estados Nutricionais em ${G.faseLabel[fase]} ${G.sexoLabel[sexo]} - ${G.ufLabel[uf]} ${ano}`
+      : `Mapeamento de Estados Nutricionais em ${G.faseLabel[fase]} ${G.sexoLabel[sexo]} - ${municipioAmigavel} ${ano}`;
     // Atualiza o elemento do título
     document.getElementById("tituloMapeamento").textContent = novoTitulo;
   });
@@ -570,7 +495,7 @@ function desenharGrafico(dados) {
     .attr("transform", `translate(0, ${height})`)
     .call(
       d3.axisBottom(x0)
-        .tickFormat(d => nomeAmigavel[d] || d)
+        .tickFormat(d => G.nomeAmigavel[d] || d)
     );
   xAxis.selectAll("text")
     .style("font-size", "14px");
@@ -624,7 +549,7 @@ function desenharGrafico(dados) {
       .on("mouseover", function(event, d) {
         tooltip.transition().duration(200).style("opacity", 1);
         tooltip.html(`
-          <strong>${nomeAmigavel[d.indicador]}</strong><br/>
+          <strong>${G.nomeAmigavel[d.indicador]}</strong><br/>
           Valor Total: ${d.Todos.toFixed(2)}%
         `);
       })
@@ -656,8 +581,8 @@ function desenharGrafico(dados) {
           const layerValue = s[0][1] - s[0][0];
           tooltip.transition().duration(200).style("opacity", 1);
           tooltip.html(`
-            <strong>${nomeAmigavel[d.indicador]}</strong><br/>
-            Sexo: ${sexoLabel[s.key]}<br/>
+            <strong>${G.nomeAmigavel[d.indicador]}</strong><br/>
+            Sexo: ${G.sexoLabel[s.key]}<br/>
             Valor: ${layerValue.toFixed(2)}%
           `);
         })
@@ -687,7 +612,7 @@ function desenharGrafico(dados) {
         .on("mouseover", function(event, d) {
            tooltip.transition().duration(200).style("opacity", 1);
            tooltip.html(`
-             <strong>${nomeAmigavel[d.indicador]}</strong><br/>
+             <strong>${G.nomeAmigavel[d.indicador]}</strong><br/>
              Valor: ${d[key].toFixed(2)}%
            `);
         })

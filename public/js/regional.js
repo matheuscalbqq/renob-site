@@ -1,4 +1,4 @@
-const width = 700, height = 500;
+import * as G from "./global.js";
 
 // Variáveis globais para controlar o modo de visualização
 let currentMode = "country"; // "brasil" ou "estado"
@@ -10,13 +10,6 @@ const selectNutricional = document.getElementById("filtroNutricional");
 const selectDivisao = d3.select("#filtro-divisao");
 const containerDivisao = d3.select("#container-divisao");
 
-//gradientes dos filtros
-const gradientes = {
-   "Fem": ["#FFF0F5", "#DC143C"],
-   "Masc": ["#E0FFFF", "#4169E1"],
-   "Todos": ["#e6fae6", "#33a460"]
- };
-
 // Formatação para valores
 const formatAbs = d3.formatLocale({
    decimal: ",",
@@ -27,111 +20,21 @@ const formatAbs = d3.formatLocale({
 
  // cores das visualizações
 function getCountryColor(sexo) {
-   const [start, end] = gradientes[sexo] || gradientes["Todos"];
+   const [start, end] = G.gradientes[sexo] || G.gradientes["Todos"];
    return d3.interpolateRgb(start, end)(0.5);
  }
 
 function getColorScale(sexo, minVal, maxVal) {
-   const [startColor, endColor] = gradientes[sexo] || gradientes["Todos"];
+   const [startColor, endColor] = G.gradientes[sexo] || G.gradientes["Todos"];
  return d3.scaleLinear().domain([minVal, maxVal]).range([startColor, endColor]);
 }
 function getHoverColorScale(minVal, maxVal) {
  return d3.scaleLinear().domain([minVal, maxVal * 0.6, maxVal]).range(["#E0FFE0", "#ADFF2F", "#00FF00"]);
 }
 
-// Transcrição para os filtros
-const nomesIndicadoresAdultoR = {
-   baixo_peso: "Baixo Peso",
-   eutrofico: "Eutrófico",
-   sobrepeso: "Sobrepeso",
-   obesidade_G_1: "Obesidade Grau I",
-   obesidade_G_2: "Obesidade Grau II",
-   obesidade_G_3: "Obesidade Grau III"
-};
-
-const nomesIndicadoresAdolescenteR = {
-   magreza_acentuada: "Magreza Acentuada",
-   magreza: "Magreza",
-   obesidade: "Obesidade",
-   obesidade_grave: "Obesidade Grave"
-};
-
-// Mapeamento de UFs para nomes
-const estados = {
-  "AC": "Acre", "AL": "Alagoas", "AM": "Amazonas", "AP": "Amapá", "BA": "Bahia",
-  "CE": "Ceará", "DF": "Distrito Federal", "ES": "Espírito Santo", "GO": "Goiás",
-  "MA": "Maranhão", "MT": "Mato Grosso", "MS": "Mato Grosso do Sul", "MG": "Minas Gerais",
-  "PA": "Pará", "PB": "Paraíba", "PR": "Paraná", "PE": "Pernambuco", "PI": "Piauí",
-  "RJ": "Rio de Janeiro", "RN": "Rio Grande do Norte", "RS": "Rio Grande do Sul",
-  "RO": "Rondônia", "RR": "Roraima", "SC": "Santa Catarina", "SP": "São Paulo",
-  "SE": "Sergipe", "TO": "Tocantins"
-};
-
-// Arquivos GeoJSON para municípios
-const stateGeojsonFiles = {
-  "AC": "data/geojson/br_cities/geojs-12-mun.json",
-  "AM": "data/geojson/br_cities/geojs-13-mun.json",
-  "AP": "data/geojson/br_cities/geojs-16-mun.json",
-  "PA": "data/geojson/br_cities/geojs-15-mun.json",
-  "RO": "data/geojson/br_cities/geojs-11-mun.json",
-  "RR": "data/geojson/br_cities/geojs-14-mun.json",
-  "TO": "data/geojson/br_cities/geojs-17-mun.json",
-  "AL": "data/geojson/br_cities/geojs-27-mun.json",
-  "BA": "data/geojson/br_cities/geojs-29-mun.json",
-  "CE": "data/geojson/br_cities/geojs-23-mun.json",
-  "MA": "data/geojson/br_cities/geojs-21-mun.json",
-  "PB": "data/geojson/br_cities/geojs-25-mun.json",
-  "PE": "data/geojson/br_cities/geojs-26-mun.json",
-  "PI": "data/geojson/br_cities/geojs-22-mun.json",
-  "RN": "data/geojson/br_cities/geojs-24-mun.json",
-  "SE": "data/geojson/br_cities/geojs-28-mun.json",
-  "ES": "data/geojson/br_cities/geojs-32-mun.json",
-  "MG": "data/geojson/br_cities/geojs-31-mun.json",
-  "RJ": "data/geojson/br_cities/geojs-33-mun.json",
-  "SP": "data/geojson/br_cities/geojs-35-mun.json",
-  "PR": "data/geojson/br_cities/geojs-41-mun.json",
-  "RS": "data/geojson/br_cities/geojs-43-mun.json",
-  "SC": "data/geojson/br_cities/geojs-42-mun.json",
-  "DF": "data/geojson/br_cities/geojs-53-mun.json",
-  "GO": "data/geojson/br_cities/geojs-52-mun.json",
-  "MT": "data/geojson/br_cities/geojs-51-mun.json",
-  "MS": "data/geojson/br_cities/geojs-50-mun.json"
-};
-
-// Arquivos GeoJSON para municípios
-const stateRGeojsonFiles = {
-  "AC": "data/geojson/by_state/health_regions_12.geojson",
-  "AM": "data/geojson/by_state/health_regions_13.geojson",
-  "AP": "data/geojson/by_state/health_regions_16.geojson",
-  "PA": "data/geojson/by_state/health_regions_15.geojson",
-  "RO": "data/geojson/by_state/health_regions_11.geojson",
-  "RR": "data/geojson/by_state/health_regions_14.geojson",
-  "TO": "data/geojson/by_state/health_regions_17.geojson",
-  "AL": "data/geojson/by_state/health_regions_27.geojson",
-  "BA": "data/geojson/by_state/health_regions_29.geojson",
-  "CE": "data/geojson/by_state/health_regions_23.geojson",
-  "MA": "data/geojson/by_state/health_regions_21.geojson",
-  "PB": "data/geojson/by_state/health_regions_25.geojson",
-  "PE": "data/geojson/by_state/health_regions_26.geojson",
-  "PI": "data/geojson/by_state/health_regions_22.geojson",
-  "RN": "data/geojson/by_state/health_regions_24.geojson",
-  "SE": "data/geojson/by_state/health_regions_28.geojson",
-  "ES": "data/geojson/by_state/health_regions_32.geojson",
-  "MG": "data/geojson/by_state/health_regions_31.geojson",
-  "RJ": "data/geojson/by_state/health_regions_33.geojson",
-  "SP": "data/geojson/by_state/health_regions_35.geojson",
-  "PR": "data/geojson/by_state/health_regions_41.geojson",
-  "RS": "data/geojson/by_state/health_regions_43.geojson",
-  "SC": "data/geojson/by_state/health_regions_42.geojson",
-  "DF": "data/geojson/by_state/health_regions_53.geojson",
-  "GO": "data/geojson/by_state/health_regions_52.geojson",
-  "MT": "data/geojson/by_state/health_regions_51.geojson",
-  "MS": "data/geojson/by_state/health_regions_50.geojson"
-};
-
 // Dados CSV
 let csvData;
-d3.csv("data/db_final.csv").then(function(data) {
+d3.csv(G.csvDataUrl).then(function(data) {
   data.forEach(d => { d.codigo_municipio = d.codigo_municipio.toString(); });
   csvData = data;
   // popula o SELECT de anos
@@ -162,8 +65,8 @@ d3.csv("data/db_final.csv").then(function(data) {
   // d) popula o SELECT de indicadores nutricionais
   // usamos o objeto de nomes amigáveis para ordenar e listar “Total” + chaves
   const nomesObj = selectFase.property("value") === "adulto"
-    ? nomesIndicadoresAdultoR
-    : nomesIndicadoresAdolescenteR;
+    ? G.nomesIndicadoresAdulto
+    : G.nomesIndicadoresAdolescente;
   const indicadores = [...Object.keys(nomesObj)];
   const selectNutr = d3.select("#filtroNutricional");
   selectNutr.selectAll("option")
@@ -180,7 +83,7 @@ d3.csv("data/db_final.csv").then(function(data) {
 });
 
 let regionData;
-d3.csv("./db_region.csv").then(data => {
+d3.csv(G.csvRegionUrl).then(data => {
   data.forEach(d => {
     d.regional_id      = d.regional_id.toString();
     d.municipio_id_sdv = d.municipio_id_sdv.toString();
@@ -244,9 +147,9 @@ function atualizarTituloRegional() {
    const sexo = d3.select("#filtro-sexo").property("value");
    const nutricional = d3.select("#filtroNutricional").property("value");
    const fase = d3.select("#filtro-fasevida").property("value");
-   const lugar = currentMode === "estado" ? estados[currentUF] : "Brasil";
+   const lugar = currentMode === "estado" ? G.ufLabel[currentUF] : "Brasil";
    // Construir string do título
-   const titulo = `Mapeamento Regional de ${nomeAmigavel[nutricional] || nutricional} em ${faseLabel[fase]} ${sexoLabel[sexo]} - ${lugar} ${ano}`;
+   const titulo = `Mapeamento Regional de ${G.nomeAmigavel[nutricional] || nutricional} em ${G.faseLabel[fase]} ${G.sexoLabel[sexo]} - ${lugar} ${ano}`;
    document.getElementById("tituloRegional").textContent = titulo;
  }
 
@@ -258,8 +161,8 @@ function atualizarEstadoNutricionalRegional() {
    if (!faseVidaReg) return;
 
    const indicadorReg = faseVidaReg === "adulto" 
-       ? nomesIndicadoresAdultoR 
-       : nomesIndicadoresAdolescenteR;
+       ? G.nomesIndicadoresAdulto 
+       : G.nomesIndicadoresAdolescente;
 
    selectNutricional.innerHTML = Object.entries(indicadorReg)
        .map(([valorR, nomeExibicaoR]) => `<option value="${valorR}">${nomeExibicaoR}</option>`)
@@ -307,7 +210,7 @@ function initCountryMap() {
      // criar SVG se não existir
      let svg = d3.select("#mapaRegional svg");
      if (svg.empty()) {
-       svg = d3.select("#mapaRegional").append("svg").attr("width", width).attr("height", height);
+       svg = d3.select("#mapaRegional").append("svg").attr("width", G.width).attr("height", G.height);
      }
  
      // desenhar
@@ -336,7 +239,7 @@ function initCountryMap() {
  
    // recalcula escala e translação para ocupar 100% da área
    const projection = d3.geoMercator()
-   .fitSize([width, height], geoData);
+   .fitSize([G.width, G.height], geoData);
    const path = d3.geoPath().projection(projection);
 
 
@@ -345,8 +248,8 @@ function initCountryMap() {
    // ————————————————
    // 1) Nome amigável do indicador
    const nomesIndicadores = filtroFase === "adulto"
-   ? nomesIndicadoresAdultoR
-   : nomesIndicadoresAdolescenteR;
+   ? G.nomesIndicadoresAdulto
+   : G.nomesIndicadoresAdolescente;
    const nutricionalName = nomesIndicadores[filtroNutr] || filtroNutr;
 
    // 2) Filtra TODO o grupo (respeita ano, fase e, se aplicável, gênero)
@@ -370,8 +273,8 @@ function initCountryMap() {
    // determina extremos do gradiente na visão país
    const indicadores = Object.keys(
       filtroFase === "adulto"
-      ? nomesIndicadoresAdultoR
-      : nomesIndicadoresAdolescenteR
+      ? G.nomesIndicadoresAdulto
+      : G.nomesIndicadoresAdolescente
    );
    // % de cada indicador no Brasil
    const pctValues = indicadores.map(ind => {
@@ -396,21 +299,28 @@ function initCountryMap() {
    pctMasc = totalAll ? (totalMasc / totalAll) * 100 : 0;
    }
 
-   // 7) Tooltip
-   const showTooltip = function(event) {
-   let html = `<strong>Brasil</strong><br>
-               <em>${nutricionalName}</em>: ${nutrPct.toFixed(1)}%`;
-   if (filtroSexo === "Todos") {
-      html += `<br><span style="color:#DC143C;">Fem: ${pctFem.toFixed(1)}%</span>
-               <br><span style="color:#4169E1;">Masc: ${pctMasc.toFixed(1)}%</span>`;
-   }
-   tooltip
-            .classed("hidden", false)
-            .style("opacity", 1)
-            .html(html)
-            .style("left", (event.clientX + 5) + "px")
-            .style("top",  (event.clientY - 28) + "px");
-   };
+  // =======================
+ // 7) Tooltip (visão Brasil)
+ // =======================
+  const showTooltip = function(event) {
+  const lines = [
+     `<div class="tooltip-title">Brasil</div>`,
+     `<div><span class="tooltip-subtitle">${nutricionalName}:</span> ${nutrPct.toFixed(1)}%</div>`,
+     ...(filtroSexo === "Todos" ? [
+        `<div class="tooltip-fem">Fem: ${pctFem.toFixed(1)}%</div>`,
+        `<div class="tooltip-masc">Masc: ${pctMasc.toFixed(1)}%</div>`
+     ] : [])
+  ];
+
+  tooltip
+     .classed("hidden", false)
+     .style("opacity", 1)
+     .html(`<div class="tooltip-content">${lines.join("")}</div>`)
+     .style("left",  (event.clientX + 5) + "px")
+     .style("top",   (event.clientY - 28) + "px");
+  };
+
+
 
    const feature = svg.selectAll("path.country").data(geoData.features);
    feature.join(
@@ -500,8 +410,8 @@ function initBrasilMap() {
     if (svg.empty()) {
       svg = d3.select("#mapaRegional")
               .append("svg")
-                .attr("width", width)
-                .attr("height", height);
+                .attr("width", G.width)
+                .attr("height", G.height);
     }
 
     atualizarQuadroRegional();
@@ -614,14 +524,14 @@ function updateBrasilMap(geoData) {
      feature.properties.value = valoresMapa.get(uf) || 0;
   });
   
-  const projection = d3.geoMercator().scale(700).center([-55, -14]).translate([width/2, height/2]);
+  const projection = d3.geoMercator().scale(700).center([-55, -14]).translate([G.width/2, G.height/2]);
   const path = d3.geoPath().projection(projection);
   
   let svgBrasil = d3.select("#mapaRegional").select("svg");
   if (svgBrasil.empty()) {
     svgBrasil = d3.select("#mapaRegional").append("svg")
-      .attr("width", width)
-      .attr("height", height);
+      .attr("width", G.width)
+      .attr("height", G.height);
   }
   svgBrasil.selectAll("path")
      .data(geoData.features)
@@ -635,56 +545,42 @@ function updateBrasilMap(geoData) {
      .attr("stroke", { "Todos": "#b982a1", "Fem": "#4682B4", "Masc": "#DB7093" }[filtroSexo] || "#ccc")
      .attr("stroke-width", 1)
      .on("mouseover", function(event, d) {
-        const nomeEstado = estados[d.id] || d.id;
-        let htmlContent = "";
+        const nomeEstado = G.ufLabel[d.id] || d.id;
         const agg = stateAggregates.get(d.id) || {};
-        if (filtroNutricional === "Total") {
-          if (filtroSexo === "Todos") {
-            const total = agg.total || 0;
-            const fem = agg.fem || 0;
-            const masc = agg.masc || 0;
-            const percFem = total > 0 ? (fem/total)*100 : 0;
-            const percMasc = total > 0 ? (masc/total)*100 : 0;
-            htmlContent = `<strong>${nomeEstado}</strong><br>
-               <div style="font-size:15px;">
-                  Entrevistados: ${formatAbs(total)}<br>
-                  <span style="color:#DC143C;">Feminino: ${percFem.toFixed(1)}%</span><br>
-                  <span style="color:#4169E1;">Masculino: ${percMasc.toFixed(1)}%</span>
-               </div>`;
-          } else {
-            const total = agg.total || 0;
-            htmlContent = `<strong>${nomeEstado}</strong>: <span style="font-size:15px;">${formatAbs(total)}</span>`;
-          }
-        } else {
-          if (filtroSexo === "Todos") {
-            const total = agg.total || 0;
-            const fem = agg.fem || 0;
-            const masc = agg.masc || 0;
-            const nutrientSum = fem + masc;
-            const statePerc = total > 0 ? (nutrientSum/total)*100 : 0;
-            const percFem = nutrientSum > 0 ? (fem/nutrientSum)*100 : 0;
-            const percMasc = nutrientSum > 0 ? (masc/nutrientSum)*100 : 0;
-            htmlContent = `<strong>${nomeEstado}</strong>:<br>
-               <div style="font-size:15px;">
-                  ${statePerc.toFixed(1)}%<br>
-                  <span style="color:#DC143C;">Feminino: ${percFem.toFixed(1)}%</span><br>
-                  <span style="color:#4169E1;">Masculino: ${percMasc.toFixed(1)}%</span>
-               </div>`;
-          } else {
-            const total = agg.total || 0;
-            const nutrientVal = agg.nutrient || 0;
-            const perc = total > 0 ? (nutrientVal/total)*100 : 0;
-            htmlContent = `<strong>${nomeEstado}</strong>:<br>
-               <div style="font-size:15px;">${perc.toFixed(1)}%</div>`;
-          }
-        }
-        tooltip.style("opacity", 1)
-               .classed("hidden",false)
-               .html(htmlContent)
-               .style("left", (event.clientX + 5) + "px")
-               .style("top", (event.clientY - 28) + "px");
-        d3.select(this).attr("stroke-width", 2);
-     })
+        let content = [];
+        if (filtroSexo === "Todos") {
+               const total = agg.total || 0;
+               const fem = agg.fem || 0;
+               const masc = agg.masc || 0;
+               const nutrientSum = fem + masc;
+               const statePerc = total > 0 ? (nutrientSum/total)*100 : 0;
+               const percFem = nutrientSum > 0 ? (fem/nutrientSum)*100 : 0;
+               const percMasc = nutrientSum > 0 ? (masc/nutrientSum)*100 : 0;
+               content = [
+                  `<div class="tooltip-title">${nomeEstado}</div>`,
+                  `<div class="tooltip-subtitle">${statePerc.toFixed(1)}%</div>`,
+                  `<div class="tooltip-fem">Feminino: ${percFem.toFixed(1)}%</div>`,
+                  `<div class="tooltip-masc">Masculino: ${percMasc.toFixed(1)}%</div>`
+               ];
+         } else {
+               const total = agg.total || 0;
+               const val = agg.nutrient || 0;
+               const perc = total > 0 ? (val/total)*100 : 0;
+               content = [
+               `<div class="tooltip-title">${nomeEstado}</div>`,
+               `<div class="tooltip-subtitle">${perc.toFixed(1)}%</div>`
+            ];
+         }
+        
+         tooltip
+            .classed("hidden", false)
+            .html(`<div class="tooltip-content">${content.join('')}</div>`)
+            .style("left",  (event.clientX + 5) + "px")
+            .style("top",   (event.clientY - 28) + "px")
+            .transition().duration(200)
+            .style("opacity", 1);
+         d3.select(this).attr("stroke-width", 2);
+      })
      .on("mouseout", function(event, d) {
         tooltip.style("opacity", 0)
                .classed("hidden",true);
@@ -768,7 +664,7 @@ function loadEstadoMap(uf) {
   d3.select("#legendRegional").html("");
   d3.select("#mapaRegional")
     .insert("h2", ":first-child")
-    .text(`${estados[uf]}`)
+    .text(`${G.ufLabel[uf]}`)
     .classed("text-center font-bold", true);
   
   d3.select("#filtro-fasevida").on("change", () => {
@@ -799,7 +695,7 @@ function updateEstadoMap(uf) {
   const selectedSexo = d3.select("#filtro-sexo").property("value");
   const selectedNutricao = d3.select("#filtroNutricional").property("value");
   
-  const geojsonFile = stateGeojsonFiles[uf];
+  const geojsonFile = G.stateGeojsonFiles[uf];
   d3.json(geojsonFile).then(function(geo) {
    const filtroFase = d3.select("#filtro-fasevida").property("value");
    const stateCSV = csvData.filter(d =>
@@ -842,14 +738,14 @@ function updateEstadoMap(uf) {
      let svgEstado = d3.select("#mapaRegional").select("svg");
      if (svgEstado.empty()) {
        svgEstado = d3.select("#mapaRegional").append("svg")
-         .attr("width", width)
-         .attr("height", height);
+         .attr("width", G.width)
+         .attr("height", G.height);
      }
      svgEstado.selectAll("path")
         .data(geo.features)
         .join("path")
         .attr("class", "municipio")
-        .attr("d", d3.geoPath().projection(d3.geoMercator().fitSize([width, height], geo)))
+        .attr("d", d3.geoPath().projection(d3.geoMercator().fitSize([G.width, G.height], geo)))
         .attr("fill", d => {
            const val = agg.get(d.properties.id || d.properties.CODMUN || d.properties.cod_mun) || 0;
            return val === 0 ? "#ccc" : colorScale(val);
@@ -903,52 +799,38 @@ function updateEstadoMap(uf) {
      
      svgEstado.selectAll("path")
         .on("mouseover", function(event, d) {
-           let htmlContent = "";
            const muniCode = d.properties.id || d.properties.CODMUN || d.properties.cod_mun;
-           if (selectedNutricao === "Total") {
-              if (selectedSexo === "Todos") {
-                 const agg = tooltipLookup.get(muniCode) || {total:0, fem:0, masc:0};
-                 const total = agg.total;
-                 const fem = agg.fem;
-                 const masc = agg.masc;
-                 const percFem = total > 0 ? (fem/total)*100 : 0;
-                 const percMasc = total > 0 ? (masc/total)*100 : 0;
-                 htmlContent = `<strong>${d.properties.name}</strong><br>
-                    <div style="font-size:15px;">
-                       Entrevistados: ${formatAbs(total)}<br>
-                       <span style="color:#DC143C;">Feminino: ${percFem.toFixed(1)}%</span><br>
-                       <span style="color:#4169E1;">Masculino: ${percMasc.toFixed(1)}%</span>
-                    </div>`;
-              } else {
-                 const total = tooltipLookup.get(muniCode) || 0;
-                 const perc = totalSexState > 0 ? (total/totalSexState)*100 : 0;
-                 htmlContent = `<strong>${d.properties.name}</strong>: <span style="font-size:15px;">${perc.toFixed(1)}%<br>
-                    Entrevistados: ${formatAbs(total)}</span>`;
-              }
+           let content = [];
+           if (selectedSexo === "Total") {
+               const agg = tooltipLookup.get(muniCode) || {nutrient:0, total:0, fem:0, masc:0};
+               const total = agg.total;
+               const nutrientSum = agg.nutrient;
+               const statePerc = total > 0 ? (nutrientSum/total)*100 : 0;
+               const percFem = (agg.fem + agg.masc) > 0 ? (agg.fem/(agg.fem+agg.masc))*100 : 0;
+               const percMasc = (agg.fem + agg.masc) > 0 ? (agg.masc/(agg.fem+agg.masc))*100 : 0;
+               content = [
+               `<div class="tooltip-title">${d.properties.name}</div>`,
+               `<div class="tooltip-subtitle">${statePerc.toFixed(1)}</div>`,
+               `<div class="tooltip-fem">Feminino: ${percFem.toFixed(1)}%</div>`,
+               `<div class="tooltip-masc">Masculino: ${percMasc.toFixed(1)}%</div>`
+             ];
            } else {
-              if (selectedSexo === "Todos") {
-                 const agg = tooltipLookup.get(muniCode) || {nutrient:0, total:0, fem:0, masc:0};
-                 const total = agg.total;
-                 const nutrientSum = agg.nutrient;
-                 const statePerc = total > 0 ? (nutrientSum/total)*100 : 0;
-                 const percFem = (agg.fem + agg.masc) > 0 ? (agg.fem/(agg.fem+agg.masc))*100 : 0;
-                 const percMasc = (agg.fem + agg.masc) > 0 ? (agg.masc/(agg.fem+agg.masc))*100 : 0;
-                 htmlContent = `<strong>${d.properties.name}</strong>: <span style="font-size:15px;">${statePerc.toFixed(1)}%<br>
-                    <span style="color:#DC143C;">Feminino: ${percFem.toFixed(1)}%</span><br>
-                    <span style="color:#4169E1;">Masculino: ${percMasc.toFixed(1)}%</span></span>`;
-              } else {
-                 const agg = tooltipLookup.get(muniCode) || {nutrient:0, total:0};
-                 const total = agg.total;
-                 const nutrientVal = agg.nutrient;
-                 const perc = total > 0 ? (nutrientVal/total)*100 : 0;
-                 htmlContent = `<strong>${d.properties.name}</strong>: ${perc.toFixed(1)}%`;
-              }
+             const agg = tooltipLookup.get(muniCode) || {nutrient:0, total:0};
+             const total = agg.total;
+            const nutrientVal = agg.nutrient;
+            const perc = total > 0 ? (nutrientVal/total)*100 : 0;
+             content = [
+               `<div class="tooltip-title">${d.properties.name}</div>`,
+               `<div class="tooltip-subtitle">${perc.toFixed(1)}%` + `</div>`
+             ];
            }
-           tooltip.style("opacity", 1)
-                  .classed("hidden",false)
-                  .html(htmlContent)
-                  .style("left", (event.clientX + 5) + "px")
-                  .style("top", (event.clientY - 28) + "px");
+           tooltip
+             .classed("hidden", false)
+             .html(`<div class="tooltip-content">${content.join('')}</div>`)
+             .style("left", (event.clientX + 5) + "px")
+             .style("top",  (event.clientY - 28) + "px")
+             .transition().duration(200)
+             .style("opacity", 1);         
            d3.select(this).attr("stroke-width", 2);
         })
         .on("mouseout", function(event, d) {
@@ -1025,7 +907,7 @@ function initHealthRegionMap(uf) {
 
   d3.select("#mapaRegional")
     .insert("h2", ":first-child")
-    .text(`${estados[uf]} – Regiões de Saúde`)
+    .text(`${G.ufLabel[uf]} – Regiões de Saúde`)
     .classed("text-center font-bold", true);
 
   // mostra o Divisão e seta padrão
@@ -1074,7 +956,7 @@ function updateHealthRegionMap(uf) {
    });
 
   // 1) carrega o GeoJSON de regiões de saúde para este UF
-  const geojsonFile = stateRGeojsonFiles[uf];
+  const geojsonFile = G.stateRGeojsonFiles[uf];
   d3.json(geojsonFile).then(geo => {
     // 2) filtra e agrega dados usando db_region (você deve ter feito o join db_final ↔ db_region em memória)
     //    Assumindo que você já carregou o CSV db_region.csv em global regionData
@@ -1137,8 +1019,8 @@ function updateHealthRegionMap(uf) {
     if (svg.empty()) {
       svg = d3.select("#mapaRegional")
               .append("svg")
-                .attr("width", width)
-                .attr("height", height);
+                .attr("width", G.width)
+                .attr("height", G.height);
     }
 
     svg.selectAll("path")
@@ -1146,7 +1028,7 @@ function updateHealthRegionMap(uf) {
        .join("path")
          .attr("class", "regiao-saude")
          .attr("d", d3.geoPath().projection(
-            d3.geoMercator().fitSize([width,height], geo)
+            d3.geoMercator().fitSize([G.width,G.height], geo)
          ))
          .attr("fill", d => {
            return d.properties.value === 0
@@ -1156,23 +1038,27 @@ function updateHealthRegionMap(uf) {
          .attr("stroke", border)
          .attr("stroke-width", 1)
          .on("mouseover", function(event, d) {
-            const name = d.properties.nome;               // ou o campo com o nome da região
-            const val  = d.properties.value;
-            let html = `<strong>${name}</strong><br>`;
-            if (selectedNutri === "Total") {
-               html += `Entrevistados: ${formatAbs(val)}`;
-            } else {
-               html += `${val.toFixed(1)}%`;
-            }
-            tooltip
-               .style("opacity", 1)
-               .html(html)
+             const name = d.properties.nome;
+             const val  = d.properties.value;
+             const display = selectedNutri === "Total"
+               ? formatAbs(val)
+               : `${val.toFixed(1)}%`;
+             const content = [
+               `<div class="tooltip-title">${name}</div>`,
+               `<div class="tooltip-subtitle">${display}</div>`
+             ];
+             tooltip
+               .classed("hidden", false)
+               .html(`<div class="tooltip-content">${content.join('')}</div>`)
                .style("left", (event.clientX + 5) + "px")
-               .style("top",  (event.clientY - 28) + "px");
-            d3.select(this).attr("stroke-width", 2);
+               .style("top",  (event.clientY - 28) + "px")
+               .transition().duration(200)
+               .style("opacity", 1);
+             d3.select(this).attr("stroke-width", 2);
          })
          .on("mouseout", function() {
-         tooltip.style("opacity", 0);
+         tooltip.style("opacity", 0)
+                .classed("hidden",true);
          d3.select(this).attr("stroke-width", 1);
          })
          

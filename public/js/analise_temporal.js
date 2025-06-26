@@ -1,5 +1,4 @@
-// Caminho do CSV
-const csvUrlTemporal = "data/db_final.csv";
+import * as G from "./global.js";
 
 // Variáveis globais para armazenar os dados
 let allDataTemporal = [];
@@ -17,7 +16,7 @@ const labelMunicipioTemporal  = document.querySelector('label[for="selectMunicip
 let regionDataTemporal = [];
 
 // carregue DB_REGION em paralelo
-d3.csv("data/db_region.csv").then(raw => {
+d3.csv(G.csvRegionUrl).then(raw => {
   // mapear as colunas do CSV para chaves que nosso código usa
   regionDataTemporal = raw.map(d => ({
     municipio_id_sdv: d.municipio_id_sdv,
@@ -85,38 +84,9 @@ function toggleContainerDivisaoTemporal() {
   }
 }
 
-// Transcrição para os filtros
-const nomesIndicadoresAdulto = {
-    baixo_peso: "Baixo Peso",
-    eutrofico: "Eutrófico",
-    sobrepeso: "Sobrepeso",
-    obesidade_G_1: "Obesidade Grau I",
-    obesidade_G_2: "Obesidade Grau II",
-    obesidade_G_3: "Obesidade Grau III"
-};
-
-const nomesIndicadoresAdolescente = {
-    magreza_acentuada: "Magreza Acentuada",
-    magreza: "Magreza",
-    obesidade: "Obesidade",
-    obesidade_grave: "Obesidade Grave"
-};
-
-const estadoLabel ={
-  baixo_peso: "Baixo Peso",
-  eutrofico: "Eutrófico",
-  sobrepeso: "Sobrepeso",
-  obesidade_G_1: "Obesidade Grau I",
-  obesidade_G_2: "Obesidade Grau II",
-  obesidade_G_3: "Obesidade Grau III",
-  magreza_acentuada: "Magreza Acentuada",
-  magreza: "Magreza",
-  obesidade: "Obesidade",
-  obesidade_grave: "Obesidade Grave"
-}
 
 // Carregar os dados e inicializar o gráfico
-d3.csv(csvUrlTemporal).then(data => {
+d3.csv(G.csvDataUrl).then(data => {
     allDataTemporal = data;
 
     // Criar um objeto global para mapear UF -> Municípios usando Map
@@ -149,7 +119,7 @@ function popularSelectsTemporais(data) {
     ufs.forEach(uf => {
         const option = document.createElement("option");
         option.value = uf;
-        option.text = ufLabel[uf] ? `${ufLabel[uf]} (${uf})` : uf;
+        option.text = G.ufLabel[uf] ? `${G.ufLabel[uf]} (${uf})` : uf;
         selectUFTemporal.appendChild(option);
     });
 
@@ -192,8 +162,8 @@ function atualizarTituloTemporal() {
 
   recuperarNomeMunicipioTemporal().then(municipioAmigavel => {
     const novoTitulo = !municipioAmigavel || municipioAmigavel === " "
-      ? `Análises Temporais de ${estadoLabel[estado]} em ${faseLabel[fase]} ${sexoLabel[sexo]} - ${ufLabel[uf]} ${ano}`.trim()
-      : `Análises Temporais de ${estadoLabel[estado]} em ${faseLabel[fase]} ${sexoLabel[sexo]} - ${municipioAmigavel} ${ano}`.trim();
+      ? `Análises Temporais de ${G.estadoLabel[estado]} em ${G.faseLabel[fase]} ${G.sexoLabel[sexo]} - ${G.ufLabel[uf]} ${ano}`.trim()
+      : `Análises Temporais de ${G.estadoLabel[estado]} em ${G.faseLabel[fase]} ${G.sexoLabel[sexo]} - ${municipioAmigavel} ${ano}`.trim();
     document.getElementById("tituloTemporal").textContent = novoTitulo;
   });
 }
@@ -283,8 +253,8 @@ function atualizarIndicadoresTemporais() {
     if (!faseVidaSelecionada) return;
 
     const indicadores = faseVidaSelecionada === "adulto" 
-        ? nomesIndicadoresAdulto 
-        : nomesIndicadoresAdolescente;
+        ? G.nomesIndicadoresAdulto 
+        : G.nomesIndicadoresAdolescente;
 
     selectIndicadorTemporal.innerHTML = Object.entries(indicadores)
         .map(([valor, nomeExibicao]) => `<option value="${valor}">${nomeExibicao}</option>`)
@@ -502,68 +472,60 @@ function desenharGraficoTemporal(dados, anos, maxY) {
   
     // Para cada série, desenha linha, círculos e labels
     Object.keys(dados).forEach(sexo => {
-      // Linha do gráfico (no linesGroup)
-      linesGroup.append("path")
-        .datum(dados[sexo])
-        .attr("fill", "none")
-        .attr("stroke", cores[sexo])
-        .attr("stroke-width", 2)
-        .attr("d", line);
-  
-      // Círculos (no circlesGroup, sempre visíveis)
-      circlesGroup.selectAll(`circle.${sexo}`)
-        .data(dados[sexo])
-        .enter()
-        .append("circle")
-        .attr("class", sexo)
-        .attr("cx", d => x(d.ano))
-        .attr("cy", d => y(d.valor))
-        .attr("r", 4)
-        .attr("fill", cores[sexo])
-        .on("mouseover", function(event, d) {
-          // Aumenta o círculo
-          d3.select(this)
-            .transition()
-            .duration(100)
-            .attr("r", 6);
-          // Mostra o label correspondente
-          labelsGroup.selectAll(`g.label-group-${sexo}`)
-            .filter(td => td.ano === d.ano)
-            .style("visibility", "visible");
-        })
-        .on("mouseout", function(event, d) {
-          // Restaura o tamanho do círculo
-          d3.select(this)
-            .transition()
-            .duration(100)
-            .attr("r", 4);
-          // Oculta o label correspondente
-          labelsGroup.selectAll(`g.label-group-${sexo}`)
-            .filter(td => td.ano === d.ano)
-            .style("visibility", "hidden");
-        });
-  
-      // Rótulos (grupo com retângulo + texto) no labelsGroup, inicialmente ocultos
-      const labelGroups = labelsGroup.selectAll(`g.label-group-${sexo}`)
-        .data(dados[sexo])
-        .enter()
-        .append("g")
-        .attr("class", `label-group-${sexo}`)
+  // Define a “chave” de classe: Masc→masc, Fem→fem, Todos→all
+  const key = sexo === "Todos" ? "all" : sexo.toLowerCase();
+
+  // 1) Linha do gráfico
+  linesGroup.append("path")
+    .datum(dados[sexo])
+    .attr("fill", "none")
+    .attr("class", `line-${key}`)    // aplica stroke via CSS
+    .attr("stroke-width", 2)
+    .attr("d", line);
+
+  // 2) Círculos
+  circlesGroup.selectAll(`circle.${key}`)
+    .data(dados[sexo])
+    .enter()
+    .append("circle")
+    .attr("class", `circle-${key}`)  // aplica fill via CSS
+    .attr("cx", d => x(d.ano))
+    .attr("cy", d => y(d.valor))
+    .attr("r", 4)
+    .on("mouseover", function(event, d) {
+      d3.select(this).transition().duration(100).attr("r", 6);
+      labelsGroup.selectAll(`g.label-group-${key}`)
+        .filter(td => td.ano === d.ano)
+        .style("visibility", "visible");
+    })
+    .on("mouseout", function(event, d) {
+      d3.select(this).transition().duration(100).attr("r", 4);
+      labelsGroup.selectAll(`g.label-group-${key}`)
+        .filter(td => td.ano === d.ano)
         .style("visibility", "hidden");
-  
-      labelGroups.append("rect")
-        .attr("x", d => x(d.ano) - 20)
-        .attr("y", d => y(d.valor) - 30)
-        .attr("width", 40)
-        .attr("height", 20)
-        .attr("fill", "white")
-        .attr("stroke", "gray");
-  
-      labelGroups.append("text")
-        .attr("x", d => x(d.ano))
-        .attr("y", d => y(d.valor) - 15)
-        .attr("text-anchor", "middle")
-        .style("font-size", "12px")
-        .text(d => d.valor.toFixed(1) + "%");
     });
+
+  // 3) Labels (mantém igual)
+  const labelGroups = labelsGroup.selectAll(`g.label-group-${key}`)
+    .data(dados[sexo])
+    .enter()
+    .append("g")
+    .attr("class", `label-group-${key}`)
+    .style("visibility", "hidden");
+
+  labelGroups.append("rect")
+    .attr("x", d => x(d.ano) - 20)
+    .attr("y", d => y(d.valor) - 30)
+    .attr("width", 40)
+    .attr("height", 20)
+    .attr("fill", "white")
+    .attr("stroke", "gray");
+
+  labelGroups.append("text")
+    .attr("x", d => x(d.ano))
+    .attr("y", d => y(d.valor) - 15)
+    .attr("text-anchor", "middle")
+    .style("font-size", "12px")
+    .text(d => d.valor.toFixed(1) + "%");
+});
 }

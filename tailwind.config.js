@@ -2,14 +2,26 @@
 module.exports = {
   content: [
     "./public/**/*.html",
-    "./public/**/*.js"
+    "./public/**/*.js",
+    "./src/**/*.{html,js}"
+  ],
+  safelist: [
+    /* todas as classes que criamos no @layer components */
+    'tooltip-regional',
+    'tooltip-content',
+    'tooltip-title',
+    'tooltip-subtitle',
+    'tooltip-fem',
+    'tooltip-masc',
+    { pattern: /^line-/ },
+    { pattern: /^circle-/ }
   ],
   theme: {
     extend: {
       colors: {
-        primary: '#597eec',    // Masculino
-        secondary: '#f76482',  // Feminino
-        tertiary: '#57bb7f',   // Todos
+        masc: '#597eec',    // Masculino
+        fem: '#f76482',  // Feminino
+        all: '#57bb7f',   // Todos
         tooltip: '#ffffff',
         tooltipBorder: '#dddddd',
       },

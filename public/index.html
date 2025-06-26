@@ -327,13 +327,13 @@
       <div id="quadroEntrevistados" class="bg-white p-4 rounded-md shadow-md">
         <!--<h2 class="font-bold text-lg mb-2">Entrevistados</h2>-->
         <p id="pHomens">
-            <span class="text-primary">■</span> Masculino: <span id="valorHomens">0</span>
+            <span class="cor-masc">■</span> Masculino: <span id="valorHomens">0</span>
         </p>
         <p id="pMulheres">
-            <span class="text-secondary">■</span> Feminino: <span id="valorMulheres">0</span>
+            <span class="cor-fem">■</span> Feminino: <span id="valorMulheres">0</span>
         </p>
         <p id="pTodos">
-            <span class="text-tertiary">■</span> Todos: <span id="valorTodos">0</span>
+            <span class="cor-all">■</span> Todos: <span id="valorTodos">0</span>
         </p>
       </div>
     </div>
@@ -440,13 +440,13 @@
         <div id="quadroEntrevistadosRegional" class="bg-white p-4 rounded-md shadow-md min-h-1/6">
           <h2 class="font-bold text-lg mb-2"></h2>
           <p id="pHomensRegional">
-              <span class="lineMasc">■</span> Masculino: <span id="valorHomensRegional">0</span>
+              <span class="cor-masc">■</span> Masculino: <span id="valorHomensRegional">0</span>
           </p>
           <p id="pMulheresRegional">
-              <span class="lineFem">■</span> Feminino: <span id="valorMulheresRegional">0</span>
+              <span class="cor-fem">■</span> Feminino: <span id="valorMulheresRegional">0</span>
           </p>
           <p id="pTodosRegional">
-              <span class="lineTodos">■</span> Todos: <span id="valorTodosRegional">0</span>
+              <span class="cor-all">■</span> Todos: <span id="valorTodosRegional">0</span>
           </p>
           
         </div>
@@ -504,13 +504,13 @@
         <div id="quadroEntrevistadosTemporal" class="bg-white p-4 rounded-md shadow-md">
           <h2 class="font-bold text-lg mb-2"></h2>
           <p id="pHomensTemporal">
-              <span class="lineMasc">■</span> Masculino: <span id="valorHomensTemporal">0</span>
+              <span class="cor-masc">■</span> Masculino: <span id="valorHomensTemporal">0</span>
           </p>
           <p id="pMulheresTemporal">
-              <span class="lineFem">■</span> Feminino: <span id="valorMulheresTemporal">0</span>
+              <span class="cor-fem">■</span> Feminino: <span id="valorMulheresTemporal">0</span>
           </p>
           <p id="pTodosTemporal">
-              <span class="lineTodos">■</span> Todos: <span id="valorTodosTemporal">0</span>
+              <span class="cor-all">■</span> Todos: <span id="valorTodosTemporal">0</span>
           </p>
         </div>
       </div>
@@ -589,20 +589,17 @@
     });
   </script>
   <!-- Tooltip -->
-<div id="regional-tooltip" class="tooltip 
-                                  fixed z-50 
-                                  bg-white text-sm text-gray-800 
-                                  px-3 py-2 rounded shadow-lg border border-gray-300
-                                  hidden
-                                  transition-opacity duration-200
-                                  pointer-events-none"></div>
+<div id="regional-tooltip" class="tooltip-regional hidden"></div>
+
+<!-- Configs Globais-->
+<script type="module" src="js/global.js"></script>
 
 <!-- Scripts -->
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="js/mapeamento.js"></script>
-<script src="js/analise_temporal.js"></script>
-<script src="js/regional.js"></script>
+<script type="module" src="js/mapeamento.js"></script>
+<script type="module" src="js/analise_temporal.js"></script>
+<script type="module" src="js/regional.js"></script>
 
 
 
