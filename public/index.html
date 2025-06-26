@@ -460,7 +460,6 @@
       </div>
     </div>
   </section>
-  <div class="fixed z-[9999] text-left p-2 bg-tooltip border border-tooltipBorder rounded-lg pointer-events-none text-tooltip font-bold shadow-tooltip opacity-0"></div>
 
 
 
@@ -576,15 +575,6 @@
     </div>
   </section>
   <!-- SCRIPT DROPDOWN -->
-
-<!-- Scripts -->
-<script src="https://d3js.org/d3.v7.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="js/mapeamento.js"></script>
-<script src="js/analise_temporal.js"></script>
-<script src="js/regional.js"></script>
-
-
   <script>
     document.getElementById("menuButton").addEventListener("click", function () {
       document.getElementById("dropdownMenu").classList.toggle("hidden");
@@ -599,6 +589,22 @@
     });
   </script>
   <!-- Tooltip -->
+<div id="regional-tooltip" class="tooltip 
+                                  fixed z-50 
+                                  bg-white text-sm text-gray-800 
+                                  px-3 py-2 rounded shadow-lg border border-gray-300
+                                  hidden
+                                  transition-opacity duration-200
+                                  pointer-events-none"></div>
+
+<!-- Scripts -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/mapeamento.js"></script>
+<script src="js/analise_temporal.js"></script>
+<script src="js/regional.js"></script>
+
+
 
 </body>
 </html>

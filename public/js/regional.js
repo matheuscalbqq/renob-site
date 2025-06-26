@@ -180,7 +180,7 @@ d3.csv("data/db_final.csv").then(function(data) {
 });
 
 let regionData;
-d3.csv("data/db_region.csv").then(data => {
+d3.csv("./db_region.csv").then(data => {
   data.forEach(d => {
     d.regional_id      = d.regional_id.toString();
     d.municipio_id_sdv = d.municipio_id_sdv.toString();
@@ -234,12 +234,7 @@ function atualizarQuadroRegional() {
  
 
 // Tooltip
-let tooltip = d3.select("body").select(".tooltip");
-if (tooltip.empty()) {
-  tooltip = d3.select("body").append("div")
-    .attr("class", "tooltip absolute bg-white border border-gray-300 p-2 text-sm shadow-lg pointer-events-none z-50 rounded max-w-xs")
-    .style("opacity", 0);
-}
+const tooltip = d3.select("#regional-tooltip");
 
 // =======================
 // Função para atualizar o título da seção Regional
@@ -409,7 +404,9 @@ function initCountryMap() {
       html += `<br><span style="color:#DC143C;">Fem: ${pctFem.toFixed(1)}%</span>
                <br><span style="color:#4169E1;">Masc: ${pctMasc.toFixed(1)}%</span>`;
    }
-   tooltip.style("opacity", 1)
+   tooltip
+            .classed("hidden", false)
+            .style("opacity", 1)
             .html(html)
             .style("left", (event.clientX + 5) + "px")
             .style("top",  (event.clientY - 28) + "px");
@@ -430,7 +427,9 @@ function initCountryMap() {
    .on("mouseover", showTooltip)
    .on("mouseout", function() {
      d3.select(this).attr("stroke-width", 1);
-     tooltip.style("opacity", 0);
+     tooltip
+            .style("opacity", 0)
+            .classed("hidden",true);
    })
    .on("click", function() {
      initBrasilMap(); // ao clicar, vai para estado
@@ -680,13 +679,15 @@ function updateBrasilMap(geoData) {
           }
         }
         tooltip.style("opacity", 1)
+               .classed("hidden",false)
                .html(htmlContent)
                .style("left", (event.clientX + 5) + "px")
                .style("top", (event.clientY - 28) + "px");
         d3.select(this).attr("stroke-width", 2);
      })
      .on("mouseout", function(event, d) {
-        tooltip.style("opacity", 0);
+        tooltip.style("opacity", 0)
+               .classed("hidden",true);
         d3.select(this).attr("stroke-width", 1);
      })
      .on("click", function(event, d) {
@@ -944,13 +945,15 @@ function updateEstadoMap(uf) {
               }
            }
            tooltip.style("opacity", 1)
+                  .classed("hidden",false)
                   .html(htmlContent)
                   .style("left", (event.clientX + 5) + "px")
                   .style("top", (event.clientY - 28) + "px");
            d3.select(this).attr("stroke-width", 2);
         })
         .on("mouseout", function(event, d) {
-           tooltip.style("opacity", 0);
+           tooltip.style("opacity", 0)
+                  .classed("hidden",true);
            d3.select(this).attr("stroke-width", 1);
         });
      
