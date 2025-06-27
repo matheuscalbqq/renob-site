@@ -27,17 +27,32 @@ Acesse o site em:
 ```
 renob-site/
 ├── src/
-│   └── input.css         # Arquivo de entrada do Tailwind
-├── dist/
-│   └── output.css        # CSS gerado automaticamente
+│   └── input.css                 # Arquivo de entrada do Tailwind
 ├── public/
-│   └── index.html        # Página HTML principal
+│   └── index.html                # Página HTML principal
+|   └── dist/
+│       └── output.css            # CSS gerado automaticamente
+|   └── data/
+│       └── db_final.csv          # Database principal
+│       └── db_region.csv         # Database de relações federativas e regiões de saúde
+│       └── geojson/
+│           └── br_cities/        # Geojsons de visualização municipal
+│           └── by_states/        # Geojsons de visualização regiões de saúde
+│           └── br_states.json    # Geojson de visualização estadual
+│           └── brazil.json       # Geojson de visualização nacional
+|   └── images/
+│       └── logo-renob-vet        # logo no header
+|   └── js/
+│       └── analise_temporal.js   # Script do gráfico de análise temporal
+│       └── global.js             # Centralização de variáveis globais
+│       └── mapeamento.js         # Script do gráfico de barras
+│       └── regional.js           # Script do gráfico de mapas regionais
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml    # Pipeline de build e deploy
-├── tailwind.config.js    # Configuração do Tailwind
-├── postcss.config.js     # Configuração do PostCSS
-└── package.json          # Dependências e scripts
+│       └── deploy.yml            # Pipeline de build e deploy
+├── tailwind.config.js            # Configuração do Tailwind
+├── postcss.config.js             # Configuração do PostCSS
+└── package.json                  # Dependências e scripts
 ```
 
 ---
