@@ -15,6 +15,8 @@ Acesse o site em:
 
 - [Tailwind CSS](https://tailwindcss.com/) — Utilitário CSS para criação rápida de interfaces responsivas
 - [PostCSS](https://postcss.org/) — Utilizado para compilar o CSS com Tailwind
+- [JavaScript](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript) — Utilizado para filtrar e calcular dados, além de renderizar gráficos via d3.js.
+- [Python](https://www.python.org/) — Utilizado para higienizar e padronizar as bases de dados via Pandas.
 - [GitHub Actions](https://github.com/features/actions) — Automatização do processo de build e deploy
 - [GitHub Pages](https://pages.github.com/) — Hospedagem gratuita do site
 
